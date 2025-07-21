@@ -1,13 +1,16 @@
 #!/bin/bash
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
+set -e
+
+# Install Rust to default location first
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+source ~/.cargo/env
 rustup default stable
 
-# Set Cargo environment variables
+# Now set custom cargo directories for cache
 export CARGO_HOME=/tmp/cargo
-export RUSTUP_HOME=/tmp/rustup
+export CARGO_TARGET_DIR=/tmp/target
+export RUST_BACKTRACE=1
 
 # Install Python dependencies
-pip install --upgrade pip
+pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
